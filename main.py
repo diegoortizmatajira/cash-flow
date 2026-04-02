@@ -93,7 +93,26 @@ def generate_movements(configs: list[Config], year: int, month: int) -> list[Mov
     return movements
 
 
-def print_movements(movements: list[Movement]) -> None:
+def pretty_print_movements(movements: list[Movement]) -> None:
+    if not movements:
+        return
+    fields: list[str] = list(Movement.model_fields.keys())
+    rows: list[list[str]] = []
+    for movement in movements:
+        rows.append([str(getattr(movement, f) or "") for f in fields])
+    col_widths: list[int] = [
+        max(len(h), *(len(row[i]) for row in rows)) for i, h in enumerate(fields)
+    ]
+    header: str = "  ".join(h.ljust(w) for h, w in zip(fields, col_widths))
+    separator: str = "  ".join("-" * w for w in col_widths)
+    print(separator)
+    print(header)
+    print(separator)
+    for row in rows:
+        print("  ".join(v.ljust(w) for v, w in zip(row, col_widths)))
+
+
+def print_movements_tsv(movements: list[Movement]) -> None:
     if not movements:
         return
     fields: list[str] = list(Movement.model_fields.keys())
@@ -108,7 +127,11 @@ def main() -> None:
     args: argparse.Namespace = parse_args()
     configs: list[Config] = read_config()
     movements: list[Movement] = generate_movements(configs, args.year, args.month)
-    print_movements(movements)
+    pretty_print_movements(movements)
+    print()
+    print("--- TSV (copy and paste into a spreadsheet) ---")
+    print()
+    print_movements_tsv(movements)
 
 
 if __name__ == "__main__":

@@ -116,5 +116,44 @@ For example, to generate projected movements for March 2026:
 uv run cash-flow 2026 3
 ```
 
-The output is printed as tab-separated values with the columns: `date`,
-`concept`, `checking_movement`, `credit_card_movement`, and `savings_movement`.
+### Output format
+
+The tool outputs the projected movements in two formats, one after the other:
+
+#### Pretty print (human-readable table)
+
+A fixed-width table with dynamically sized columns, designed for quick reading
+in the terminal:
+
+```
+----------  -------------------------------------------------------  -------------------  ----------------------  -----------------
+date        concept                                                  checking_movement    credit_card_movement    savings_movement
+----------  -------------------------------------------------------  -------------------  ----------------------  -----------------
+2026-03-05  Payment for home internet                                -80.0
+2026-03-09  Null movement                                            0.0                  0.0                     0.0
+2026-03-09  Saving allocation (transfer from checking to savings)    -500.0                                       500.0
+2026-03-09  Income from work                                         1500.0
+2026-03-18  Payment with credit card                                                      -94.92
+2026-03-23  Income from work                                         1500.0
+```
+
+#### TSV (tab-separated values)
+
+Below the table, a TSV section is printed after a divider line:
+
+```
+--- TSV (copy and paste into a spreadsheet) ---
+
+date	concept	checking_movement	credit_card_movement	savings_movement
+2026-03-05	Payment for home internet	-80.0		
+2026-03-09	Null movement	0.0	0.0	0.0
+2026-03-09	Saving allocation (transfer from checking to savings)	-500.0		500.0
+2026-03-09	Income from work	1500.0		
+2026-03-18	Payment with credit card		-94.92	
+2026-03-23	Income from work	1500.0		
+```
+
+This format is designed so you can copy the output directly from the terminal
+and paste it into a spreadsheet application (Google Sheets, Excel, LibreOffice
+Calc, etc.). The tab characters ensure that each value lands in its own cell
+automatically.
