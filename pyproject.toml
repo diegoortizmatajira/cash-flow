@@ -1,0 +1,16 @@
+[project]
+name = "cash-flow"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "pydantic>=2.12.5",
+]
+
+[project.scripts]
+cash-flow = "main:main"
+
+[tool.setuptools]
+py-modules = ["main"]
+packages = ["model"]

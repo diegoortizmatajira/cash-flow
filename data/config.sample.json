@@ -1,0 +1,34 @@
+[
+  {
+    "concept": "Null movement",
+    "reference_date": "2026-02-09",
+    "recurrence_in_days": 28,
+    "checking_movement": 0,
+    "savings_movement": 0,
+    "credit_card_movement": 0
+  },
+  {
+    "concept": "Saving allocation (transfer from checking to savings)",
+    "reference_date": "2026-02-09",
+    "recurrence_in_days": 28,
+    "checking_movement": -500,
+    "savings_movement": 500,
+    "credit_card_movement": 0
+  },
+  {
+    "concept": "Income from work",
+    "reference_date": "2026-02-09",
+    "recurrence_in_days": 14,
+    "checking_movement": 1500
+  },
+  {
+    "concept": "Payment with credit card",
+    "day_of_the_month": 18,
+    "credit_card_movement": -94.92
+  },
+  {
+    "concept": "Payment for home internet",
+    "day_of_the_month": 5,
+    "checking_movement": -80
+  }
+]
