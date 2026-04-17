@@ -1,16 +1,25 @@
 {
-    "version": "0.2.0",
-    "configurations": [
-        {
-            "name": "Python: Debug Cash-Flow",
-            "type": "python",
-            "request": "launch",
-            "program": "${workspaceFolder}/main.py",
-            "args": [
-                "2026",
-                "4"
-            ],
-            "console": "integratedTerminal"
-        }
-    ]
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Python: Debug Cash-Flow",
+      "type": "python",
+      "request": "launch",
+      "program": "${workspaceFolder}/main.py",
+      "args": ["${input:Year}", "${input:Month}"],
+      "console": "integratedTerminal"
+    }
+  ],
+  "inputs": [
+    {
+      "id": "Year",
+      "type": "promptString",
+      "description": "Enter the year"
+    },
+    {
+      "id": "Month",
+      "type": "promptString",
+      "description": "Enter the month"
+    }
+  ]
 }
