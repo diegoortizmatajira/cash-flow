@@ -1,3 +1,7 @@
+"""
+Generate projected cash-flow movements for a given month based on a JSON configuration.
+"""
+
 import argparse
 import json
 import logging
@@ -16,6 +20,12 @@ logger: logging.Logger = logging.getLogger(__name__)
 
 
 def parse_args() -> argparse.Namespace:
+    """
+    Parse command-line arguments to determine the target year and month.
+
+    Returns:
+        argparse.Namespace: Parsed arguments containing 'year' and 'month'.
+    """
     parser: argparse.ArgumentParser = argparse.ArgumentParser(
         description="Generate projected cash-flow movements for a given month.",
     )
@@ -35,6 +45,15 @@ def parse_args() -> argparse.Namespace:
 
 
 def read_config(path: Path = CONFIG_PATH) -> list[Config]:
+    """
+    Read the configuration file and validate its structure.
+
+    Args:
+        path (Path): The path to the configuration file. Defaults to CONFIG_PATH.
+
+    Returns:
+        list[Config]: A list of validated Config objects.
+    """
     with open(path, "r", encoding="utf-8") as f:
         data: list[dict[str, object]] = json.load(f)
     adapter: TypeAdapter[list[Config]] = TypeAdapter(list[Config])
@@ -42,6 +61,22 @@ def read_config(path: Path = CONFIG_PATH) -> list[Config]:
 
 
 def generate_movements(configs: list[Config], year: int, month: int) -> list[Movement]:
+    """
+    Generate a list of movements for a given month based on the provided configuration.
+
+    This function creates a list of financial movements using the provided configurations
+    and a specified year and month. Depending on the configuration, movements can either:
+    - Occur on a specific day of the month, or
+    - Repeat at a regular interval starting from a reference date.
+
+    Args:
+        configs (list[Config]): A list of Config objects defining movement specifications.
+        year (int): The target year for the movements.
+        month (int): The target month for the movements.
+
+    Returns:
+        list[Movement]: A list of Movement objects sorted by date.
+    """
     movements: list[Movement] = []
     first_day: date = date(year, month, 1)
     last_day_number: int = monthrange(year, month)[1]
@@ -94,6 +129,19 @@ def generate_movements(configs: list[Config], year: int, month: int) -> list[Mov
 
 
 def pretty_print_movements(movements: list[Movement]) -> None:
+    """
+    Display a list of financial movements in a readable tabular format.
+
+    This function takes a list of Movement objects and prints them in a well-
+    formatted table. Each attribute of the Movement model is displayed as a 
+    column, with headers automatically derived from the model's fields. 
+
+    Args:
+        movements (list[Movement]): A list of Movement objects to be printed.
+
+    Returns:
+        None
+    """
     if not movements:
         return
     fields: list[str] = list(Movement.model_fields.keys())
@@ -113,6 +161,19 @@ def pretty_print_movements(movements: list[Movement]) -> None:
 
 
 def print_movements_tsv(movements: list[Movement]) -> None:
+    """
+    Print a list of financial movements in TSV (Tab-Separated Values) format.
+
+    This function takes a list of Movement objects and outputs them in a tab-separated format,
+    suitable for copying into a spreadsheet for further analysis. The model's field names
+    are used as column headers.
+
+    Args:
+        movements (list[Movement]): A list of Movement objects to be printed.
+
+    Returns:
+        None
+    """
     if not movements:
         return
     fields: list[str] = list(Movement.model_fields.keys())
@@ -123,6 +184,17 @@ def print_movements_tsv(movements: list[Movement]) -> None:
 
 
 def main() -> None:
+    """
+    The main function of the script, orchestrating the cash-flow projection process.
+
+    This function sets up logging, parses command-line arguments for the
+    target year and month, reads configurations from a JSON file, generates
+    financial movements based on the configurations, and displays the results
+    in both a readable table format and TSV format for further analysis.
+
+    Returns:
+        None
+    """
     logging.basicConfig(level=logging.WARNING)
     args: argparse.Namespace = parse_args()
     configs: list[Config] = read_config()
